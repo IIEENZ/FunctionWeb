@@ -11,12 +11,17 @@ $conn_user = new mysqli($host, $user, $pass, $dbname_user);
 $dbname_video = "video";
 $conn_video = new mysqli($host, $user, $pass, $dbname_video);
 
-// ตรวจสอบการเชื่อมต่อทั้งคู่
-if ($conn_user->connect_error || $conn_video->connect_error) {
-    die("Connection failed: " . ($conn_user->connect_error ?: $conn_video->connect_error));
+// 3. เชื่อมต่อฐานข้อมูลสำหรับระบบ Chat Board (เพิ่มใหม่)
+$dbname_chat = "chat_board";
+$conn_chat = new mysqli($host, $user, $pass, $dbname_chat);
+
+// ตรวจสอบการเชื่อมต่อทั้ง 3 ฐานข้อมูล
+if ($conn_user->connect_error || $conn_video->connect_error || $conn_chat->connect_error) {
+    die("Connection failed: " . ($conn_user->connect_error ?: ($conn_video->connect_error ?: $conn_chat->connect_error)));
 }
 
-// ตั้งค่าภาษาไทยให้ทั้งสองการเชื่อมต่อ
+// ตั้งค่าภาษาไทยให้ทุกการเชื่อมต่อ
 $conn_user->set_charset("utf8mb4");
 $conn_video->set_charset("utf8mb4");
+$conn_chat->set_charset("utf8mb4");
 ?>
